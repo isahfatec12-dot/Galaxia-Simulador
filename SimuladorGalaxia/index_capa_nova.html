@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#070c18">
+<title>Via Láctea — Explorador 3D · Física</title>
+<style>
+:root{--bg:#070b15;--panel:#0d1423;--panel2:#101a2b;--line:rgba(177,201,231,.13);--text:#eaf1fb;--muted:#9baec7;--blue:#9fb8d5;--accent:#c5d8ee;--gold:#d8c8a6}
+*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:var(--bg);color:var(--text);font:15px/1.55 Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;overflow-x:hidden}
+button{font:inherit;color:inherit;cursor:pointer}button:focus-visible{outline:2px solid #c4d9f1;outline-offset:3px}
+#cover{min-height:100svh;display:grid;place-items:center;position:relative;overflow:hidden;background:radial-gradient(ellipse at 50% 54%,#111d31 0,#0a1222 36%,#070b15 73%)}#cover:before,#cover:after{content:"";position:absolute;border:1px solid rgba(173,200,230,.055);border-radius:50%;width:min(75vw,800px);aspect-ratio:1;transform:rotate(-20deg) scaleY(.28);pointer-events:none}#cover:after{width:min(95vw,1050px);transform:rotate(25deg) scaleY(.25);border-color:rgba(173,200,230,.035)}
+.cover-stars{position:absolute;inset:0;pointer-events:none;background-image:radial-gradient(1px 1px at 8% 17%,#dce7f7 80%,transparent),radial-gradient(1px 1px at 24% 72%,#dce7f7 80%,transparent),radial-gradient(1.5px 1.5px at 80% 23%,#c6d8f1 80%,transparent),radial-gradient(1px 1px at 68% 80%,#fff 80%,transparent),radial-gradient(1px 1px at 91% 61%,#c6d8f1 80%,transparent),radial-gradient(1px 1px at 42% 11%,#fff 80%,transparent);background-size:280px 230px,370px 310px,440px 370px,330px 280px,510px 420px,390px 330px;opacity:.55}
+.cover-content{z-index:1;position:relative;text-align:center;padding:34px 22px;max-width:820px;width:100%;transform:translateY(-2vh)}.eyebrow{letter-spacing:.23em;text-transform:uppercase;color:#8cc6dc;font-size:.72rem;font-weight:700}.atom-mark{width:220px;height:128px;margin:5px auto 10px;display:block;overflow:visible;filter:drop-shadow(0 0 14px rgba(147,192,219,.12))}.atom-orbit{fill:none;stroke:rgba(154,191,219,.52);stroke-width:1.1}.atom-core{fill:url(#coreGlow)}.cover-content h1{font-size:clamp(3.6rem,10vw,7rem);line-height:.98;letter-spacing:.045em;margin:4px 0 16px;font-weight:750;background:linear-gradient(100deg,#eef4ff 10%,#b5d9e8 56%,#e4effb 92%);-webkit-background-clip:text;background-clip:text;color:transparent;text-transform:uppercase}.cover-content p{font-size:clamp(1.02rem,2.2vw,1.2rem);line-height:1.75;color:#b8c6d8;margin:0 auto 27px;max-width:590px}.primary{border:1px solid rgba(221,235,252,.35);border-radius:10px;padding:15px 23px;background:linear-gradient(135deg,#cce7f0,#a9d1e0);color:#101a29;font-weight:750;box-shadow:0 8px 32px #0005;transition:transform .2s,filter .2s}.primary:hover{transform:translateY(-2px);filter:brightness(1.06)}.cover-note{font-size:.7rem!important;letter-spacing:.025em;color:#8092aa!important;margin-top:23px!important;text-transform:uppercase}
+header{position:sticky;top:0;z-index:10;background:rgba(7,11,21,.88);backdrop-filter:blur(18px);border-bottom:1px solid var(--line)}.topbar{max-width:1500px;margin:auto;padding:14px 24px;display:flex;align-items:center;justify-content:space-between;gap:20px}.brand{display:flex;align-items:center;gap:12px;font-size:.95rem;font-weight:700;letter-spacing:.01em}.brand-mark{width:32px;height:32px;border-radius:9px;border:1px solid #8ca4c3;display:grid;place-items:center;color:#c8d8eb;font-size:1.1rem;background:linear-gradient(145deg,#182940,#0b1220)}.header-tag{color:var(--muted);font-size:.8rem}
+main{max-width:1500px;margin:auto;padding:26px 24px 54px}.intro{display:flex;align-items:end;justify-content:space-between;gap:20px;margin-bottom:18px}.intro h2{font-size:clamp(1.55rem,3vw,2.3rem);letter-spacing:-.045em;margin:0 0 5px}.intro p{margin:0;color:var(--muted);max-width:700px}.live-indicator{font-size:.78rem;color:#a8c4b9;white-space:nowrap;display:flex;align-items:center;gap:8px}.live-indicator:before{content:"";width:6px;height:6px;border-radius:50%;background:#a4c7b4;box-shadow:0 0 10px #a4c7b466}
+.explorer-grid{display:grid;grid-template-columns:minmax(0,1fr) 320px;gap:16px;align-items:stretch}.visual-card,.info-card,.section-card{border:1px solid var(--line);border-radius:16px;background:linear-gradient(145deg,rgba(15,24,40,.96),rgba(9,15,27,.98));overflow:hidden;box-shadow:0 18px 55px #0002}.visual-head{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:15px 17px;border-bottom:1px solid var(--line)}.visual-head strong{font-size:.9rem}.view-label{font-size:.76rem;color:#9eb1c9}.canvas-wrap{position:relative;background:radial-gradient(ellipse at 50% 48%,#111e32 0,#09111f 48%,#070c17 100%);height:clamp(340px,48vw,610px);min-height:340px;overflow:hidden}canvas{display:block;width:100%;height:100%;touch-action:none;cursor:grab}canvas:active{cursor:grabbing}.canvas-hint{position:absolute;left:16px;bottom:13px;font-size:.72rem;color:#8094ae;pointer-events:none;background:#070c17a8;padding:6px 9px;border-radius:7px;border:1px solid #9db2ce16}.canvas-top-note{position:absolute;top:14px;left:16px;pointer-events:none;color:#9db2c9;font-size:.7rem;letter-spacing:.12em;text-transform:uppercase}
+.controls{padding:13px 15px;display:flex;flex-wrap:wrap;align-items:center;gap:8px;border-top:1px solid var(--line)}.control-btn{background:#121e30;border:1px solid #293a51;border-radius:8px;padding:8px 11px;color:#d1deed;font-size:.8rem;transition:background .15s,border-color .15s}.control-btn:hover{background:#1b2a40;border-color:#607a9b}.control-btn svg{vertical-align:-3px;margin-right:5px}.control-spacer{flex:1}.toggle{display:flex;align-items:center;gap:8px;color:#aabbd0;font-size:.8rem;cursor:pointer}.toggle input{accent-color:#b7cce3;width:15px;height:15px}
+.legend{display:flex;gap:15px;flex-wrap:wrap;padding:11px 17px;border-top:1px solid var(--line);color:#91a4bc;font-size:.72rem}.legend span{display:flex;align-items:center;gap:6px}.dot{display:inline-block;width:6px;height:6px;border-radius:50%;background:#b8cce2}.dot.core{background:#d8d1c1;box-shadow:0 0 7px #d8d1c177}.dot.arm{background:#a2b8d1}.dot.halo{background:#758ba6;opacity:.65}.info-card{padding:20px;display:flex;flex-direction:column;gap:18px}.info-kicker{font-size:.7rem;letter-spacing:.17em;text-transform:uppercase;color:#8ea6c3}.info-card h3{font-size:1.35rem;line-height:1.2;letter-spacing:-.03em;margin:6px 0 8px}.info-card p{color:#aebdd0;font-size:.88rem;margin:0}.fact-list{display:grid;gap:0}.fact{padding:12px 0;border-top:1px solid var(--line)}.fact:first-child{border-top:0}.fact-label{font-size:.72rem;color:#7f94af;margin-bottom:3px}.fact-value{font-size:.94rem;color:#e0e9f5;font-weight:620}.callout{padding:12px 13px;border:1px solid #7891ae2c;border-radius:10px;background:#14213680;color:#9eb2cb;font-size:.78rem}
+.section-card{margin-top:20px;padding:22px}.section-heading{display:flex;justify-content:space-between;align-items:end;gap:16px;margin-bottom:16px}.section-heading h3{margin:0 0 4px;font-size:1.22rem;letter-spacing:-.03em}.section-heading p{margin:0;color:var(--muted);font-size:.85rem}.type-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}.type-card{border:1px solid #26374e;border-radius:12px;background:#0b1321;padding:13px;text-align:left;transition:border-color .2s,background .2s,transform .2s;min-width:0}.type-card:hover{transform:translateY(-2px);border-color:#617a99}.type-card[aria-pressed="true"]{border-color:#9fb7d4;background:linear-gradient(145deg,#18283c,#0c1524);box-shadow:inset 0 0 0 1px #9fb7d41c}.type-art{height:110px;display:grid;place-items:center;margin-bottom:10px;border-radius:8px;background:radial-gradient(ellipse,#142238,#0a111d 70%)}.type-art canvas{width:100%;height:110px;cursor:pointer}.type-name{font-weight:700;font-size:.93rem;margin-bottom:3px}.type-description{color:#94a8c1;font-size:.77rem;line-height:1.45}.type-status{display:inline-block;margin-top:9px;font-size:.68rem;color:#9bb6d5}
+.learning-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}.learn-card{border:1px solid var(--line);border-radius:11px;padding:16px;background:#0a1220}.learn-num{font-size:.72rem;letter-spacing:.14em;color:#839bb8}.learn-card h4{font-size:.98rem;margin:8px 0 7px}.learn-card p{font-size:.82rem;color:#a4b4c8;margin:0}.talk-track{margin-top:16px;padding:16px 18px;border-left:2px solid #8ea8c7;background:#111d2e;border-radius:0 10px 10px 0}.talk-track strong{font-size:.85rem}.talk-track p{color:#aebdd0;font-size:.83rem;margin:5px 0 0}
+footer{max-width:1500px;margin:auto;padding:0 24px 26px;color:#6f829b;font-size:.75rem;display:flex;justify-content:space-between;gap:18px;border-top:1px solid var(--line);padding-top:18px}
+@media(max-width:980px){.explorer-grid{grid-template-columns:1fr}.info-card{display:grid;grid-template-columns:1fr 1fr;gap:14px}.info-main{grid-row:span 2}.fact-list{align-self:start}.callout{align-self:end}.canvas-wrap{height:clamp(350px,62vw,570px)}}
+@media(max-width:640px){.atom-mark{width:180px;height:108px}.cover-content{padding:28px 20px;transform:none}.cover-content h1{font-size:clamp(3rem,14vw,5rem);letter-spacing:.015em}.cover-content p{line-height:1.6}.topbar{padding:12px 15px}.header-tag{display:none}main{padding:20px 13px 38px}.intro{align-items:start;flex-direction:column}.live-indicator{display:none}.canvas-wrap{height:380px;min-height:320px}.visual-head{padding:13px}.controls{gap:6px;padding:11px}.control-btn{padding:8px 9px;font-size:.76rem}.control-spacer{display:none}.toggle{margin-left:auto}.info-card{display:flex;padding:17px}.type-grid{grid-template-columns:1fr}.type-card{display:grid;grid-template-columns:105px 1fr;column-gap:12px;align-items:center}.type-art{grid-row:span 3;height:88px;margin:0}.type-art canvas{height:88px}.type-name{align-self:end}.type-description{align-self:start}.type-status{margin-top:3px}.learning-grid{grid-template-columns:1fr}.section-card{padding:17px}.section-heading{align-items:start;flex-direction:column}footer{padding:16px 14px 22px;flex-direction:column;gap:5px}}
+@media(prefers-reduced-motion:reduce){*,*:before,*:after{scroll-behavior:auto!important;transition:none!important}}
+</style>
+</head>
+<body>
+<section id="cover" aria-label="Capa de abertura">
+  <div class="cover-stars"></div>
+  <div class="cover-content">
+    <div class="eyebrow">Explorador astronômico · Física</div>
+    <svg class="atom-mark" viewBox="0 0 220 128" aria-hidden="true">
+      <defs><radialGradient id="coreGlow"><stop offset="0" stop-color="#f3f7ff"/><stop offset=".28" stop-color="#d4e6f1"/><stop offset="1" stop-color="#7d9eb9" stop-opacity=".08"/></radialGradient></defs>
+      <ellipse class="atom-orbit" cx="110" cy="64" rx="105" ry="27" transform="rotate(-27 110 64)"/>
+      <ellipse class="atom-orbit" cx="110" cy="64" rx="105" ry="27" transform="rotate(27 110 64)"/>
+      <circle cx="110" cy="64" r="26" fill="#9fc4df" opacity=".12"/>
+      <circle class="atom-core" cx="110" cy="64" r="20"/>
+      <circle cx="110" cy="64" r="3.2" fill="#f4f7f8"/>
+    </svg>
+    <h1>Via Láctea</h1>
+    <p>Uma viagem interativa pela nossa galáxia. Explore suas estruturas, descubra onde estamos e conheça o objeto compacto que existe em seu centro.</p>
+    <button class="primary" id="startBtn">Iniciar exploração <span aria-hidden="true">↗</span></button>
+    <p class="cover-note">Modelo ilustrativo, interativo e não representado em escala.</p>
+  </div>
+</section>
+<header>
+  <div class="topbar"><div class="brand"><div class="brand-mark">✧</div><span>Via Láctea — Explorador 3D · Física</span></div><div class="header-tag">MISSÃO 01 / NOSSA GALÁXIA</div></div>
+</header>
+<main id="explorer">
+  <div class="intro"><div><div class="eyebrow">Atlas galáctico</div><h2>Uma galáxia em movimento</h2><p>Explore a estrutura da Via Láctea e compare diferentes formas de galáxias.</p></div><div class="live-indicator">Simulação ativa</div></div>
+  <div class="explorer-grid">
+    <section class="visual-card" aria-label="Simulação interativa da galáxia">
+      <div class="visual-head"><strong id="sceneTitle">Via Láctea · espiral barrada</strong><span class="view-label" id="viewLabel">Visão oblíqua</span></div>
+      <div class="canvas-wrap" id="canvasWrap"><canvas id="galaxy" aria-label="Galáxia formada por partículas. Arraste para girar e use a roda para aproximar."></canvas><div class="canvas-top-note">SIMULAÇÃO 3D · PARTÍCULAS</div><div class="canvas-hint">Arraste para girar · roda do mouse para zoom</div></div>
+      <div class="controls">
+        <button class="control-btn" id="zoomOut" aria-label="Afastar zoom">− Zoom</button>
+        <button class="control-btn" id="zoomIn" aria-label="Aproximar zoom">＋ Zoom</button>
+        <button class="control-btn" id="overview">Visão geral</button>
+        <button class="control-btn" id="reset">Reiniciar</button>
+        <span class="control-spacer"></span>
+        <label class="toggle"><input id="autoRotate" type="checkbox" checked> Giro automático</label>
+      </div>
+      <div class="legend"><span><i class="dot core"></i> Região central</span><span><i class="dot arm"></i> Braços e disco</span><span><i class="dot halo"></i> Halo estelar</span></div>
+    </section>
+    <aside class="info-card">
+      <div class="info-main"><div class="info-kicker">Em foco · 01</div><h3 id="factTitle">A nossa casa cósmica</h3><p id="factText">A Via Láctea é uma galáxia espiral barrada: bilhões de estrelas, gás, poeira e matéria escura estão ligados pela gravidade. O Sol é apenas uma das estrelas desse enorme sistema.</p></div>
+      <div class="fact-list">
+        <div class="fact"><div class="fact-label">Tipo</div><div class="fact-value" id="factType">Espiral barrada</div></div>
+        <div class="fact"><div class="fact-label">Diâmetro aproximado</div><div class="fact-value">100 mil anos-luz</div></div>
+        <div class="fact"><div class="fact-label">Sistema Solar</div><div class="fact-value">~26 mil anos-luz do centro</div></div>
+      </div>
+      <div class="callout" id="factCallout">A luz leva cerca de 100 mil anos para atravessar o disco de uma ponta à outra — uma escala muito além da experiência cotidiana.</div>
+    </aside>
+  </div>
+
+  <section class="section-card" aria-labelledby="typesHeading">
+    <div class="section-heading"><div><h3 id="typesHeading">Comparar tipos de galáxias</h3><p>Selecione uma forma para mudar a simulação e observar as diferenças.</p></div></div>
+    <div class="type-grid">
+      <button class="type-card" data-type="spiral" aria-pressed="true"><div class="type-art"><canvas id="miniSpiral" aria-hidden="true"></canvas></div><div class="type-name">Espiral</div><div class="type-description">Braços curvos, disco achatado e uma região central mais densa.</div><span class="type-status">Visualização principal</span></button>
+      <button class="type-card" data-type="elliptical" aria-pressed="false"><div class="type-art"><canvas id="miniElliptical" aria-hidden="true"></canvas></div><div class="type-name">Elíptica</div><div class="type-description">Forma oval, com estrelas distribuídas suavemente e sem braços definidos.</div><span class="type-status">Selecionar modelo</span></button>
+      <button class="type-card" data-type="irregular" aria-pressed="false"><div class="type-art"><canvas id="miniIrregular" aria-hidden="true"></canvas></div><div class="type-name">Irregular</div><div class="type-description">Distribuição assimétrica, sem uma forma geométrica global bem definida.</div><span class="type-status">Selecionar modelo</span></button>
+    </div>
+  </section>
+
+  <section class="section-card" aria-labelledby="learnHeading">
+    <div class="section-heading"><div><h3 id="learnHeading">O que estamos observando?</h3><p>Notas rápidas para acompanhar a apresentação de Física.</p></div></div>
+    <div class="learning-grid">
+      <article class="learn-card"><div class="learn-num">01 / ESTRUTURA</div><h4>Disco e braços espirais</h4><p>O disco reúne estrelas, gás e poeira. Os braços são regiões estruturadas onde há formação estelar; não são braços sólidos girando como objetos rígidos.</p></article>
+      <article class="learn-card"><div class="learn-num">02 / CENTRO</div><h4>Núcleo e Sagittarius A*</h4><p>No centro galáctico há uma região muito densa e complexa. Sagittarius A* é um buraco negro supermassivo com cerca de quatro milhões de massas solares.</p></article>
+      <article class="learn-card"><div class="learn-num">03 / NOSSA POSIÇÃO</div><h4>Onde fica o Sol?</h4><p>O Sistema Solar está no disco, na região do Braço de Órion, a aproximadamente 26 mil anos-luz do centro — longe do núcleo.</p></article>
+      <article class="learn-card"><div class="learn-num">04 / MATÉRIA</div><h4>Estrelas, nebulosas e poeira</h4><p>Estrelas emitem luz; nebulosas são nuvens de gás e poeira, algumas formando novas estrelas. A poeira também absorve e espalha luz visível.</p></article>
+      <article class="learn-card"><div class="learn-num">05 / GRAVIDADE</div><h4>Como as galáxias se formam?</h4><p>A gravidade reúne matéria ao longo do tempo. Gás pode esfriar e formar estrelas, enquanto fusões e interações com outras galáxias alteram sua estrutura.</p></article>
+      <article class="learn-card"><div class="learn-num">06 / ESCALAS</div><h4>Distâncias astronômicas</h4><p>Um ano-luz é a distância percorrida pela luz em um ano: aproximadamente 9,46 trilhões de quilômetros. É uma unidade de distância, não de tempo.</p></article>
+    </div>
+</section>
+</main>
+<footer><span>Explorador astronômico · Projeto educativo de Física</span><span>Representação artística: posições, distâncias, dimensões e proporções não estão em escala.</span></footer>
+<script>
+(() => {
+'use strict';
+const canvas=document.getElementById('galaxy'),ctx=canvas.getContext('2d',{alpha:false});
+const wrap=document.getElementById('canvasWrap');
+const state={type:'spiral',yaw:-.28,pitch:.92,zoom:1,auto:true,drag:false,lastX:0,lastY:0,spin:0,focus:'overview'};
+let W=0,H=0,DPR=1,particles=[],backgroundStars=[],seed=58391,raf=0,lastTime=0;
+const rand=()=>{seed=(seed*1664525+1013904223)>>>0;return seed/4294967296};
+const clamp=(v,a,b)=>Math.max(a,Math.min(b,v));
+function makeParticles(type){
+ seed=type==='spiral'?58391:type==='elliptical'?9341:20271; const out=[];
+ if(type==='spiral'){
+  // Four narrow, curved arms built from thousands of fine points; no thick bands.
+  for(let i=0;i<10400;i++){
+   const arm=i%4, r=Math.pow(rand(),.72)*1.0;
+   const theta=arm*Math.PI/2+r*7.4+(rand()-.5)*(.09+.14*r);
+   const spread=(rand()-.5)*(.035+.075*r);
+   const rr=clamp(r+spread,0,1.03);
+   const a=theta+(rand()-.5)*(.08+.12*r);
+   const x=Math.cos(a)*rr*1.22,y=Math.sin(a)*rr*.87;
+   const z=(rand()-.5)*(.018+.10*r);
+   const colorRoll=rand();
+   let color=colorRoll<.46?'176,196,218':colorRoll<.76?'133,160,188':colorRoll<.92?'191,199,207':'164,157,184';
+   // Thin, subtle central bar connects the compact core to the inner arms.
+   const bar=rand()<.12&&r<.38;
+   out.push({x:bar?(rand()-.5)*.58:x,y:bar?(rand()-.5)*.045:y,z,r:bar?rand()*.0018+.0008:rand()*.0017+.0006,c:color,a:rand()*.48+.25});
+  }
+  for(let i=0;i<1000;i++){let a=rand()*Math.PI*2,r=Math.pow(rand(),1.8)*.19;out.push({x:Math.cos(a)*r,y:Math.sin(a)*r*.84,z:(rand()-.5)*.055,r:rand()*.0022+.0009,c:rand()<.7?'213,218,220':'181,166,145',a:rand()*.55+.25});}
+ } else if(type==='elliptical'){
+  for(let i=0;i<10800;i++){const a=rand()*Math.PI*2,r=Math.pow(rand(),.64),q=Math.sqrt(rand());const rr=r*q;out.push({x:Math.cos(a)*rr*.9,y:Math.sin(a)*rr*.58,z:(rand()-.5)*rr*.35,r:rand()*.0019+.0005,c:rand()<.6?'174,191,211':rand()<.7?'197,190,180':'120,146,174',a:rand()*.48+.12});}
+ } else {
+  for(let i=0;i<7200;i++){let cluster=rand()<.7?0:1;let cx=cluster?-.28:.23,cy=cluster?-.05:.13;let x=cx+(rand()+rand()+rand()-1.5)*.39,y=cy+(rand()+rand()+rand()-1.5)*.31;out.push({x,y,z:(rand()-.5)*.32,r:rand()*.0022+.0006,c:rand()<.58?'169,190,211':rand()<.7?'194,184,181':'121,155,177',a:rand()*.55+.12});}
+ }
+ return out;
+}
+function makeBg(){seed=113;backgroundStars=[];for(let i=0;i<260;i++)backgroundStars.push({x:rand(),y:rand(),r:rand()*1.15+.25,a:rand()*.55+.1,tw:rand()*6.28});}
+function resize(){const rect=wrap.getBoundingClientRect();DPR=Math.min(window.devicePixelRatio||1,2);W=rect.width;H=rect.height;canvas.width=Math.max(1,Math.floor(W*DPR));canvas.height=Math.max(1,Math.floor(H*DPR));ctx.setTransform(DPR,0,0,DPR,0,0);draw(0);}
+function project(p,t){
+ const c=Math.cos(state.yaw+t),s=Math.sin(state.yaw+t);
+ let x=p.x*c-p.y*s,y=p.x*s+p.y*c,z=p.z||0;
+ const cp=Math.cos(state.pitch),sp=Math.sin(state.pitch);
+ const yy=y*cp-z*sp,zz=y*sp+z*cp;
+ const scale=Math.min(W,H)*.43*state.zoom;
+ const perspective=2.4/(2.4+zz*.38);
+ return {x:W/2+x*scale*perspective,y:H/2+yy*scale*perspective,z:zz,scale:perspective};
+}
+function draw(time){
+ if(!W||!H)return;
+ const sec=time/1000;ctx.setTransform(DPR,0,0,DPR,0,0);
+ ctx.fillStyle='#080e1a';ctx.fillRect(0,0,W,H);
+ const glow=ctx.createRadialGradient(W*.5,H*.49,0,W*.5,H*.49,Math.max(W,H)*.58);glow.addColorStop(0,'#17263a');glow.addColorStop(.48,'#0c1728');glow.addColorStop(1,'#080e1a');ctx.fillStyle=glow;ctx.fillRect(0,0,W,H);
+ for(const s of backgroundStars){let tw=.72+.28*Math.sin(sec*.55+s.tw);ctx.globalAlpha=s.a*tw;ctx.fillStyle='#c5d5e9';ctx.beginPath();ctx.arc(s.x*W,s.y*H,s.r,0,Math.PI*2);ctx.fill();}
+ ctx.globalAlpha=1;
+ // Faint, fine halo specks remain present for every galaxy type.
+ for(let i=0;i<particles.length;i++){const p=particles[i];const q=project(p,state.auto?state.spin:0);let size=Math.max(.35,p.r*Math.min(W,H)*1.7*q.scale*state.zoom);if(size>2.5)size=2.5;ctx.globalAlpha=p.a;ctx.fillStyle=`rgb(${p.c})`;ctx.beginPath();ctx.arc(q.x,q.y,size,0,Math.PI*2);ctx.fill();}
+ ctx.globalAlpha=1;
+ if(state.type==='spiral'){
+  // Compact luminous center, not a large sphere; the particle structure remains visible.
+  const center=project({x:0,y:0,z:0},state.auto?state.spin:0);
+  const g=ctx.createRadialGradient(center.x,center.y,0,center.x,center.y,Math.min(W,H)*.055);g.addColorStop(0,'rgba(222,222,210,.32)');g.addColorStop(.22,'rgba(173,190,208,.12)');g.addColorStop(1,'rgba(120,150,180,0)');ctx.fillStyle=g;ctx.beginPath();ctx.arc(center.x,center.y,Math.min(W,H)*.055,0,Math.PI*2);ctx.fill();
+  ctx.fillStyle='rgba(224,224,212,.8)';ctx.beginPath();ctx.arc(center.x,center.y,1.6,0,Math.PI*2);ctx.fill();
+ }
+ // Somente dois marcadores: Sagittarius A* e Sistema Solar.
+ if(state.type==='spiral'){
+  const center=project({x:0,y:0,z:0},state.auto?state.spin:0);
+  const sun=project({x:-.48,y:-.18,z:.006},state.auto?state.spin:0);
+  function marker(point,label,subtitle,color,dx,dy){
+   ctx.save();ctx.globalAlpha=1;ctx.strokeStyle=color;ctx.lineWidth=1;
+   ctx.beginPath();ctx.arc(point.x,point.y,4,0,Math.PI*2);ctx.stroke();
+   ctx.fillStyle=color;ctx.beginPath();ctx.arc(point.x,point.y,2,0,Math.PI*2);ctx.fill();
+   const boxW=subtitle?154:Math.max(94,label.length*6.4+16),boxH=subtitle?43:27;
+   const bx=clamp(point.x+dx,8,W-boxW-8),by=clamp(point.y+dy,8,H-boxH-8);
+   const ax=clamp(point.x,bx+10,bx+boxW-10),ay=dy<0?by+boxH:by;
+   ctx.globalAlpha=.88;ctx.beginPath();ctx.moveTo(point.x,point.y);ctx.lineTo(ax,ay);ctx.stroke();
+   ctx.globalAlpha=.96;ctx.fillStyle='rgba(7,14,26,.94)';ctx.strokeStyle=color;ctx.lineWidth=.8;
+   ctx.beginPath();ctx.roundRect(bx,by,boxW,boxH,6);ctx.fill();ctx.stroke();
+   ctx.globalAlpha=1;ctx.fillStyle='#e7effa';ctx.font='600 12px system-ui, sans-serif';ctx.textBaseline='top';ctx.fillText(label,bx+8,by+6);
+   if(subtitle){ctx.fillStyle='#b8c8dc';ctx.font='11px system-ui, sans-serif';ctx.fillText(subtitle,bx+8,by+23);}
+   ctx.restore();
+  }
+  marker(center,'Sagittarius A*','buraco negro supermassivo','#d7c9a4',-94,-72);
+  marker(sun,'Sistema Solar','posição aproximada','#9abce7',42,-48);
+ }
+ if(state.auto){state.spin+=.00017*Math.min(50,Math.max(0,time-lastTime));}
+ lastTime=time;
+}
+function frame(t){draw(t);raf=requestAnimationFrame(frame)}
+function setType(type){
+ state.type=type;particles=makeParticles(type);
+ const details={
+ spiral:{title:'Via Láctea · espiral barrada',name:'A nossa casa cósmica',text:'A Via Láctea é uma galáxia espiral barrada: bilhões de estrelas, gás, poeira e matéria escura estão ligados pela gravidade. O Sol é apenas uma das estrelas desse enorme sistema.',type:'Espiral barrada',callout:'A luz leva cerca de 100 mil anos para atravessar o disco de uma ponta à outra — uma escala muito além da experiência cotidiana.'},
+ elliptical:{title:'Galáxia elíptica · modelo comparativo',name:'Estrelas em forma oval',text:'Galáxias elípticas têm uma distribuição aproximadamente oval de estrelas e pouco gás frio em muitas delas. Em geral, apresentam menos formação estelar recente do que galáxias espirais ricas em gás.',type:'Elíptica',callout:'A forma oval é uma distribuição tridimensional de estrelas, não um disco com braços espirais.'},
+ irregular:{title:'Galáxia irregular · modelo comparativo',name:'Uma forma sem simetria global',text:'Galáxias irregulares não têm uma estrutura espiral ou elíptica bem definida. Interações gravitacionais e processos internos podem contribuir para suas formas assimétricas.',type:'Irregular',callout:'A aparência irregular não significa ausência de gravidade: as estrelas e o gás continuam fazendo parte de um sistema gravitacional.'}
+ }[type];
+ document.getElementById('sceneTitle').textContent=details.title;document.getElementById('factTitle').textContent=details.name;document.getElementById('factText').textContent=details.text;document.getElementById('factType').textContent=details.type;document.getElementById('factCallout').textContent=details.callout;
+ document.querySelectorAll('.type-card').forEach(b=>{const active=b.dataset.type===type;b.setAttribute('aria-pressed',String(active));b.querySelector('.type-status').textContent=active?'Visualização selecionada':'Selecionar modelo';});
+ draw(performance.now());
+}
+function resetCamera(){state.yaw=-.28;state.pitch=.92;state.zoom=1;state.spin=0;state.auto=true;document.getElementById('autoRotate').checked=true;document.getElementById('viewLabel').textContent='Visão oblíqua';draw(performance.now());}
+function zoom(f){state.zoom=clamp(state.zoom*f,.62,1.8);draw(performance.now());}
+canvas.addEventListener('pointerdown',e=>{state.drag=true;state.lastX=e.clientX;state.lastY=e.clientY;canvas.setPointerCapture(e.pointerId);});
+canvas.addEventListener('pointermove',e=>{if(!state.drag)return;let dx=e.clientX-state.lastX,dy=e.clientY-state.lastY;state.lastX=e.clientX;state.lastY=e.clientY;state.yaw+=dx*.006;state.pitch=clamp(state.pitch+dy*.004,.18,1.48);state.auto=false;document.getElementById('autoRotate').checked=false;document.getElementById('viewLabel').textContent='Câmera manual';});
+canvas.addEventListener('pointerup',()=>{state.drag=false;});canvas.addEventListener('pointercancel',()=>{state.drag=false;});
+canvas.addEventListener('wheel',e=>{e.preventDefault();zoom(e.deltaY<0?1.09:.917);},{passive:false});
+document.getElementById('zoomIn').addEventListener('click',()=>zoom(1.16));document.getElementById('zoomOut').addEventListener('click',()=>zoom(.86));
+document.getElementById('overview').addEventListener('click',()=>{resetCamera();document.getElementById('viewLabel').textContent='Visão geral';});
+document.getElementById('reset').addEventListener('click',()=>{setType('spiral');resetCamera();});
+document.getElementById('autoRotate').addEventListener('change',e=>{state.auto=e.target.checked;document.getElementById('viewLabel').textContent=state.auto?'Visão oblíqua':'Câmera manual';});
+document.querySelectorAll('.type-card').forEach(b=>b.addEventListener('click',()=>{setType(b.dataset.type);resetCamera();}));
+document.getElementById('startBtn').addEventListener('click',()=>{document.getElementById('explorer').scrollIntoView({behavior:matchMedia('(prefers-reduced-motion: reduce)').matches?'auto':'smooth'});});
+function mini(canvas,type){
+ const c=canvas.getContext('2d');const rect=canvas.getBoundingClientRect();const w=Math.max(100,rect.width),h=Math.max(80,rect.height),d=Math.min(devicePixelRatio||1,2);canvas.width=w*d;canvas.height=h*d;c.setTransform(d,0,0,d,0,0);c.clearRect(0,0,w,h);let s=type==='spiral'?58391:type==='elliptical'?9341:20271;const rnd=()=>{s=(s*1664525+1013904223)>>>0;return s/4294967296};const cx=w/2,cy=h/2;
+ for(let i=0;i<850;i++){let x,y;if(type==='spiral'){let arm=i%4,r=Math.sqrt(rnd()),a=arm*Math.PI/2+r*7.4+(rnd()-.5)*.22;x=cx+Math.cos(a)*r*w*.32;y=cy+Math.sin(a)*r*h*.3;}else if(type==='elliptical'){let a=rnd()*Math.PI*2,r=Math.sqrt(rnd());x=cx+Math.cos(a)*r*w*.31;y=cy+Math.sin(a)*r*h*.35;}else{x=cx+(rnd()+rnd()+rnd()-1.5)*w*.34;y=cy+(rnd()+rnd()+rnd()-1.5)*h*.36;}c.globalAlpha=rnd()*.65+.15;c.fillStyle=rnd()<.65?'#a9bfd8':'#d1d1cc';c.beginPath();c.arc(x,y,rnd()*1.1+.25,0,Math.PI*2);c.fill();}
+ c.globalAlpha=1;
+}
+function drawMinis(){mini(document.getElementById('miniSpiral'),'spiral');mini(document.getElementById('miniElliptical'),'elliptical');mini(document.getElementById('miniIrregular'),'irregular');}
+particles=makeParticles('spiral');makeBg();resize();drawMinis();window.addEventListener('resize',()=>{resize();drawMinis();});
+if(!window.matchMedia('(prefers-reduced-motion: reduce)').matches){raf=requestAnimationFrame(frame);}
+})();
+</script>
+</body>
+</html>
